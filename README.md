@@ -1,6 +1,6 @@
 # Axite business models
 
-Internal, password-protected website for tweaking Axite's business model. Several saved dashboards (research & pharma route, direct to consumer, combined), each with editable customers, plans, cost lines and funding rounds. Every change is saved on the server with version history, so you continue where you left off on any device.
+Internal, password-protected website for tweaking Axite's business model. Several saved dashboards (research & pharma route, direct to consumer, combined, USA), each with editable customers, plans, cost lines and funding rounds. Every change is saved on the server with version history, so you continue where you left off on any device.
 
 ## Run locally
 
@@ -20,7 +20,7 @@ Open http://localhost:3000. No dependencies to install: it uses Node 22's built-
 3. Open the service → **Volumes → Add volume**, mount path `/data`. The app writes its database to the volume automatically (it reads `RAILWAY_VOLUME_MOUNT_PATH`). Without a volume the data is lost on every deploy.
 4. **Settings → Networking → Generate domain** (or attach your own). Done.
 
-Each push to the branch Railway follows redeploys the app. The three starting dashboards are only created the first time the database is empty; later deploys keep your numbers.
+Each push to the branch Railway follows redeploys the app. Each starting dashboard is created once, the first time a version that includes it starts; later deploys keep your numbers, and a starting dashboard you deleted does not come back.
 
 ## What the model does
 
@@ -37,6 +37,6 @@ Each push to the branch Railway follows redeploys the app. The three starting da
 
 - `server/server.js` – HTTP server, login, API. No framework.
 - `server/db.js` – SQLite storage (dashboards, snapshots).
-- `server/seeds.js` – the three starting dashboards.
+- `server/seeds.js` – the starting dashboards; `server/usa-seed.json` holds the US route from the October 2026 market research.
 - `public/model.js` – the calculation engine and the generated sentences; shared by browser and tests.
 - `public/dashboard.js`, `public/overview.js`, `public/dnd.js` – the pages.

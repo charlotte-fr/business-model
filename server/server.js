@@ -17,11 +17,21 @@ if (!APP_PASSWORD) { console.error('APP_PASSWORD is not set. Refusing to start w
 if (!SESSION_SECRET) { console.error('SESSION_SECRET is not set. Set a long random string.'); process.exit(1); }
 if (APP_PASSWORD.length < 8) console.warn('Warning: APP_PASSWORD is shorter than 8 characters.');
 
-// ---------- seed on first start ----------
-if (!db.metaGet('seeded')) {
-  for (const d of seedDashboards()) db.createDashboard(d);
-  db.metaSet('seeded', new Date().toISOString());
-  console.log('Seeded starting dashboards.');
+// ---------- seed starting dashboards ----------
+// Each seed is created once, the first time a server with it starts. Existing dashboards are never touched,
+// and a seed the user deleted does not come back.
+{
+  const legacy = db.metaGet('seeded'); // servers seeded before per-seed keys existed hold the first three
+  const seeds = seedDashboards();
+  let added = 0;
+  seeds.forEach((d, i) => {
+    const key = 'seeded:' + d.name;
+    if (db.metaGet(key)) return;
+    if (legacy && i < 3) { db.metaSet(key, legacy); return; }
+    db.createDashboard(d); db.metaSet(key, new Date().toISOString()); added++;
+  });
+  if (!legacy) db.metaSet('seeded', new Date().toISOString());
+  if (added) console.log(`Seeded ${added} starting dashboard${added === 1 ? '' : 's'}.`);
 }
 
 // ---------- auth helpers ----------

@@ -41,7 +41,7 @@ console.log('engine ok');
     const li = await f('/login', { method: 'POST', body: JSON.stringify({ password: 'secret-pass' }) }); assert.equal(li.status, 200);
     cookie = li.headers.get('set-cookie').split(';')[0]; assert.ok(cookie.startsWith('sid='));
     assert.equal((await f('/')).status, 200);
-    const list = await (await f('/api/dashboards')).json(); assert.equal(list.dashboards.length, 3);
+    const list = await (await f('/api/dashboards')).json(); assert.equal(list.dashboards.length, seedDashboards().length);
     const d = list.dashboards[0];
     // save with correct rev, then stale rev -> conflict
     const st = M.normalize(d.state); st.opening.cash = 12345;

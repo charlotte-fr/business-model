@@ -1,5 +1,5 @@
 'use strict';
-// Starting numbers for the three dashboards. Internal plan, real cash position (October 2026).
+// Starting numbers for the four dashboards. Internal plan, real cash position (October 2026).
 // Everything here is editable in the app; this file only matters on first start.
 
 const YEARS = { start: 2027, count: 5 };
@@ -63,6 +63,9 @@ function base(route, segments) {
   };
 }
 
+// US route, from the October 2026 US market research. Same shape as an export file.
+const USA = require('./usa-seed.json');
+
 function seedDashboards() {
   return [
     {
@@ -83,6 +86,7 @@ function seedDashboards() {
       description: 'All customer types together, as in the October 2026 model. Research and pharma pay the bills while certification opens patients and clinics.',
       state: base('all', [seg('wellness'), seg('patients'), seg('research'), seg('clinics'), seg('pharma')]),
     },
+    { name: USA.name, route: USA.route, description: USA.description, state: USA.state },
   ];
 }
 
