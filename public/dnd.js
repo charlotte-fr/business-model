@@ -29,6 +29,18 @@
       };
       grip.addEventListener('pointermove', move); grip.addEventListener('pointerup', up); grip.addEventListener('pointercancel', up);
     });
+    // ▲ ▼ buttons next to the grip
+    root.addEventListener('click', e => {
+      const b = e.target.closest('.mv'); if (!b) return;
+      const item = b.closest('[data-dnd]'); if (!item) return;
+      const list = item.dataset.dnd; const dir = +b.dataset.mv;
+      const items = [...root.querySelectorAll(`[data-dnd="${CSS.escape(list)}"]`)];
+      const i = items.indexOf(item); const j = i + dir;
+      if (j < 0 || j >= items.length) return;
+      e.preventDefault();
+      onReorder(list, item.dataset.id, items[j].dataset.id, dir > 0);
+      requestAnimationFrame(() => { const el = root.querySelector(`[data-dnd="${CSS.escape(list)}"][data-id="${CSS.escape(item.dataset.id)}"]`); if (!el) return; const nb = el.querySelector(`.mv[data-mv="${dir}"]`); if (nb) nb.focus(); if (el.classList.contains('card') || el.classList.contains('block') || el.classList.contains('dcard')) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); });
+    });
     root.addEventListener('keydown', e => {
       if (!e.target.classList.contains('grip')) return;
       if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
@@ -52,5 +64,7 @@
     if (after) to++;
     rest.splice(to, 0, item); return rest;
   }
-  window.DnD = { attach, move };
+  /** Reorder handle: grip for dragging plus up/down buttons. */
+  const handle = (label = 'Drag to reorder') => `<span class="handle"><button class="grip" type="button" aria-label="${label}" title="Drag, or use the arrows">⋮⋮</button><button class="mv" type="button" data-mv="-1" aria-label="Move up" title="Move up">▲</button><button class="mv" type="button" data-mv="1" aria-label="Move down" title="Move down">▼</button></span>`;
+  window.DnD = { attach, move, handle };
 })();

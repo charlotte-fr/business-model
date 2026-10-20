@@ -151,7 +151,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;max-width:90ch}
 .dcard .desc{color:var(--muted);font-size:13px;margin:0}
 .dcard .row{display:flex;align-items:center;gap:8px;justify-content:space-between}
 .dcard .row .btns{display:flex;gap:4px;position:relative;z-index:1}
-.dcard .grip{position:relative;z-index:1}
+.dcard .handle{position:relative;z-index:1}
 .dcard .mini{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font-size:12.5px}
 .dcard .mini b{display:block;font-size:16px}
 .dcard .mini .bad{color:var(--bad)}
@@ -174,3 +174,9 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;max-width:90ch}
 @media (max-width:480px){.grid3{grid-template-columns:1fr 1fr}.verdict{padding:20px 18px 16px;border-radius:18px}}
 tr.drop-before td{box-shadow:inset 0 3px 0 0 var(--brand-2)}
 tr.drop-after td{box-shadow:inset 0 -3px 0 0 var(--brand-2)}
+
+.handle{display:inline-flex;align-items:center;gap:0;flex:none;margin-right:2px}
+.mv{border:none;background:none;color:var(--muted);cursor:pointer;font-size:10px;line-height:1;padding:4px 3px;border-radius:6px}
+.mv:hover{background:var(--field);color:var(--ink)}
+tr .handle{vertical-align:middle}
+tr .mv{padding:2px 2px}

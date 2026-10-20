@@ -54,10 +54,10 @@
     $('#headline').textContent = vd.h; $('#subline').textContent = vd.s;
     drawCash();
     const subs = M.blockSubtitles(R, S);
-    const block = (key, title, body) => `<section class="block" data-dnd="blocks" data-id="${key}"><h2><button class="grip" type="button" aria-label="Drag to reorder block">⋮⋮</button>${esc(title)}</h2>${subs[key] ? `<p class="sub">${esc(subs[key])}</p>` : ''}${body}</section>`;
+    const block = (key, title, body) => `<section class="block" data-dnd="blocks" data-id="${key}"><h2>${DnD.handle('Drag to reorder block')}${esc(title)}</h2>${subs[key] ? `<p class="sub">${esc(subs[key])}</p>` : ''}${body}</section>`;
     const L = R.N - 1;
     const parts = {
-      kpis: () => `<section class="block" style="padding:0;border:none;background:none" data-dnd="blocks" data-id="kpis"><div class="kpis">${M.kpis(R).map((x, i) => `<div class="kpi">${i === 0 ? '<button class="grip" type="button" aria-label="Drag to reorder block" style="float:right;margin:-4px -6px 0 0">⋮⋮</button>' : ''}<div class="v${x.bad ? ' bad' : ''}">${esc(x.v)}</div><div class="l">${esc(x.l)}</div></div>`).join('')}</div></section>`,
+      kpis: () => `<section class="block" style="padding:0;border:none;background:none" data-dnd="blocks" data-id="kpis"><div class="kpis">${M.kpis(R).map((x, i) => `<div class="kpi">${i === 0 ? '<span style="float:right;margin:-4px -6px 0 0">' + DnD.handle('Drag to reorder block') + '</span>' : ''}<div class="v${x.bad ? ' bad' : ''}">${esc(x.v)}</div><div class="l">${esc(x.l)}</div></div>`).join('')}</div></section>`,
       insights: () => block('insights', 'What the numbers say', `<ul class="insights">${M.insights(R, S).map(i => `<li class="${i.tone}">${esc(i.text)}</li>`).join('')}</ul>`),
       revenue: () => block('revenue', 'Revenue by customer type', `<div class="chart" id="revChart"></div><div class="legend" id="revLegend"></div>`),
       mix: () => block('mix', `Product mix in ${R.Y[L]}`, mixTable()),
@@ -111,7 +111,7 @@
   const drawRev = () => stacked('revChart', 'revLegend', R.segs.map(sg => ({ name: sg.s.name, vals: sg.rev, color: col(sg.i) })), R.revenue, 'Revenue by customer type per year');
   const drawCosts = () => stacked('costChart', 'costLegend', R.byCat.map((c, i) => ({ name: c.cat, vals: c.annual, color: col(M.CATEGORIES.indexOf(c.cat) + 3) })), R.opex, 'Operating costs by category per year');
 
-  const grip = (list, id) => `<button class="grip" type="button" aria-label="Drag to reorder">⋮⋮</button>`;
+  const grip = () => DnD.handle();
   function mixTable() {
     const L = R.N - 1, tot = R.revenue[L], gtot = R.gp[L];
     let h = `<div class="mixrow" aria-hidden="true">${R.segs.map(sg => tot > 0 && sg.rev[L] > 0 ? `<div style="width:${sg.rev[L] / tot * 100}%;background:${col(sg.i)}"></div>` : '').join('')}</div>`;
