@@ -34,6 +34,21 @@ if (APP_PASSWORD.length < 8) console.warn('Warning: APP_PASSWORD is shorter than
   if (added) console.log(`Seeded ${added} starting dashboard${added === 1 ? '' : 's'}.`);
 }
 
+// ---------- one-off: "What the numbers say" moved to the bottom of the default block order ----------
+// Only dashboards still on the old default order are touched; any order a user set is kept. The previous state is in the history.
+if (!db.metaGet('layout:insights-last')) {
+  const OLD = 'kpis,insights,revenue,mix,costs,pl';
+  let moved = 0;
+  for (const d of db.listDashboards()) {
+    const blocks = (d.state.layout && d.state.layout.blocks) || [];
+    if (blocks.join(',') !== OLD) continue;
+    d.state.layout.blocks = ['kpis', 'revenue', 'mix', 'costs', 'pl', 'insights'];
+    db.saveDashboard(d.id, { state: d.state, rev: d.rev }); moved++;
+  }
+  db.metaSet('layout:insights-last', new Date().toISOString());
+  if (moved) console.log(`Moved "What the numbers say" to the bottom on ${moved} dashboard${moved === 1 ? '' : 's'}.`);
+}
+
 // ---------- auth helpers ----------
 const b64 = s => Buffer.from(s).toString('base64url');
 const sign = s => crypto.createHmac('sha256', SESSION_SECRET).update(s).digest('base64url');

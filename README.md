@@ -29,7 +29,7 @@ Each push to the branch Railway follows redeploys the app. Each starting dashboa
 - **Funding** lines land in a chosen month. Opening cash is the balance on 1 January of the first year.
 - **Corporate tax** is applied to positive results, after carried-forward losses when that option is on.
 - The verdict, the KPIs, the "What the numbers say" block and the explanatory text under each card are all generated from the numbers.
-- Drag the ⋮⋮ handle to reorder cards, table rows and result blocks. The order is saved. With the keyboard: focus a handle and press the arrow keys. "What the numbers say" always stays at the bottom of the page.
+- Drag the ⋮⋮ handle to reorder cards, table rows and result blocks. The order is saved. With the keyboard: focus a handle and press the arrow keys. "What the numbers say" starts at the bottom.
 - **History** keeps a version at most every 20 minutes while you edit, plus any version you save by hand. Restore any of them; "Reset to starting numbers" restores the version created with the dashboard.
 - **Export / Import** moves a dashboard as a JSON file.
 

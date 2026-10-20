@@ -26,12 +26,8 @@
   function fit(arr, n, fill = 0) { const a = Array.isArray(arr) ? arr.slice(0, n).map(v) : []; while (a.length < n) a.push(fill); return a; }
 
   /** Bring any saved state up to the current schema and make every array the right length. Mutates and returns S. */
-  const ALL_BLOCKS = ['kpis', 'revenue', 'mix', 'costs', 'pl', 'insights'];
-  /** Block order for the results page. Unknown keys are dropped, missing ones appended, and "What the numbers say" always sits at the bottom. */
-  function layoutOrder(blocks) {
-    const have = (blocks || []).filter(b => ALL_BLOCKS.includes(b) && b !== 'insights');
-    return have.concat(ALL_BLOCKS.filter(b => b !== 'insights' && !have.includes(b)), ['insights']);
-  }
+  // Default block order for the results page; "What the numbers say" starts at the bottom. Any order can be saved.
+  const DEFAULT_BLOCKS = ['kpis', 'revenue', 'mix', 'costs', 'pl', 'insights'];
 
   function normalize(S) {
     S.schema = 2;
@@ -52,7 +48,8 @@
     }
     S.costs = (S.costs || []).map(c => ({ id: c.id || uid('k'), name: c.name || 'Cost', category: CATEGORIES.includes(c.category) ? c.category : 'Other', type: COST_TYPES[c.type] ? c.type : 'month', values: fit(c.values, n), salary: v(c.salary), note: c.note || '' }));
     S.funding = (S.funding || []).map(f => ({ id: f.id || uid('f'), name: f.name || 'Funding', type: FUND_TYPES[f.type] ? f.type : 'equity', amount: v(f.amount), year: Math.round(v(f.year)) || Y[0], month: Math.max(1, Math.min(12, Math.round(v(f.month)) || 1)), note: f.note || '' }));
-    S.layout = { blocks: layoutOrder((S.layout && S.layout.blocks) || []) };
+    const have = ((S.layout && S.layout.blocks) || []).filter(b => DEFAULT_BLOCKS.includes(b));
+    S.layout = { blocks: have.concat(DEFAULT_BLOCKS.filter(b => !have.includes(b))) };
     return S;
   }
 
@@ -259,5 +256,5 @@
     return `Plan years ${R.Y[0]} to ${R.Y[L]}. Opening cash ${eur(v(S.opening.cash))}. Funding: ${f}. ${S.plans.length} plans, ${S.segments.length} customer types, ${S.costs.length} cost lines. Prices are working figures until certification. Every change is saved on the server, so anyone with the password sees the same numbers.`;
   }
 
-  return { MONTHS, UNITS, COST_TYPES, CATEGORIES, FUND_TYPES, v, eur, eurFull, num, num1, pct, uid, esc, sum, years, normalize, layoutOrder, blank, compute, verdict, kpis, insights, segmentMeta, planMeta, costMeta, fundingMeta, blockSubtitles, footer, monthName, roundUp };
+  return { MONTHS, UNITS, COST_TYPES, CATEGORIES, FUND_TYPES, v, eur, eurFull, num, num1, pct, uid, esc, sum, years, normalize, DEFAULT_BLOCKS, blank, compute, verdict, kpis, insights, segmentMeta, planMeta, costMeta, fundingMeta, blockSubtitles, footer, monthName, roundUp };
 });
