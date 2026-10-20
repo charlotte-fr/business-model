@@ -23,10 +23,8 @@
     const S = M.normalize(JSON.parse(JSON.stringify(d.state))); const R = M.compute(S); const L = R.N - 1;
     const vd = M.verdict(R, S);
     return `<article class="dcard${d.archived ? ' archived' : ''}" data-dnd="dashboards" data-id="${d.id}">
-      <div class="row"><div style="display:flex;gap:6px;align-items:center;min-width:0">${DnD.handle('arrows', 'Dashboard')}<span class="badge">${M.esc(d.route || 'Model')}</span></div>
-        <div class="btns"><button class="btn sm" data-act="dup" type="button">Duplicate</button><button class="btn sm" data-act="rename" type="button">Rename</button>${d.archived ? `<button class="btn sm" data-act="unarchive" type="button">Restore</button><button class="btn sm danger" data-act="delete" type="button">Delete</button>` : `<button class="btn sm" data-act="archive" type="button">Archive</button>`}</div></div>
+      <div class="row"><div style="display:flex;gap:6px;align-items:center;min-width:0">${DnD.handle('arrows', 'Dashboard')}<span class="badge">${M.esc(d.route || 'Model')}</span></div><span class="when">Edited ${when(d.updatedAt)}</span></div>
       <h2><a href="/d/${d.id}">${M.esc(d.name)}</a></h2>
-      <p class="desc">${M.esc(d.description || '')}</p>
       <p class="desc" style="color:var(--ink);font-weight:700">${M.esc(vd.h)}</p>
       ${spark(R)}
       <div class="mini">
@@ -35,7 +33,7 @@
         <div>Break-even<b class="${R.be ? '' : 'bad'}">${R.be || 'Not yet'}</b></div>
         <div>Extra funding needed<b class="${R.fundingGap > 0 ? 'bad' : ''}">${R.fundingGap > 0 ? M.eur(M.roundUp(R.fundingGap)) : 'None'}</b></div>
       </div>
-      <div class="when">Edited ${when(d.updatedAt)}</div>
+      <div class="row btns"><button class="btn sm" data-act="dup" type="button">Duplicate</button><button class="btn sm" data-act="rename" type="button">Rename</button>${d.archived ? `<button class="btn sm" data-act="unarchive" type="button">Restore</button><button class="btn sm danger" data-act="delete" type="button">Delete</button>` : `<button class="btn sm" data-act="archive" type="button">Archive</button>`}</div>
     </article>`;
   }
   function render() {
