@@ -23,7 +23,7 @@
     const S = M.normalize(JSON.parse(JSON.stringify(d.state))); const R = M.compute(S); const L = R.N - 1;
     const vd = M.verdict(R, S);
     return `<article class="dcard${d.archived ? ' archived' : ''}" data-dnd="dashboards" data-id="${d.id}">
-      <div class="row"><div style="display:flex;gap:6px;align-items:center;min-width:0">${DnD.handle()}<span class="badge">${M.esc(d.route || 'Model')}</span></div>
+      <div class="row"><div style="display:flex;gap:6px;align-items:center;min-width:0">${DnD.handle('arrows', 'Dashboard')}<span class="badge">${M.esc(d.route || 'Model')}</span></div>
         <div class="btns"><button class="btn sm" data-act="dup" type="button">Duplicate</button><button class="btn sm" data-act="rename" type="button">Rename</button>${d.archived ? `<button class="btn sm" data-act="unarchive" type="button">Restore</button><button class="btn sm danger" data-act="delete" type="button">Delete</button>` : `<button class="btn sm" data-act="archive" type="button">Archive</button>`}</div></div>
       <h2><a href="/d/${d.id}">${M.esc(d.name)}</a></h2>
       <p class="desc">${M.esc(d.description || '')}</p>

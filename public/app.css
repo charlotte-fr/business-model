@@ -176,7 +176,7 @@ tr.drop-before td{box-shadow:inset 0 3px 0 0 var(--brand-2)}
 tr.drop-after td{box-shadow:inset 0 -3px 0 0 var(--brand-2)}
 
 .handle{display:inline-flex;align-items:center;gap:0;flex:none;margin-right:2px}
-.mv{border:none;background:none;color:var(--muted);cursor:pointer;font-size:10px;line-height:1;padding:4px 3px;border-radius:6px}
+.mv{border:none;background:none;color:var(--muted);cursor:pointer;font-size:11px;line-height:1;padding:5px 4px;border-radius:6px}
 .mv:hover{background:var(--field);color:var(--ink)}
 tr .handle{vertical-align:middle}
 tr .mv{padding:2px 2px}

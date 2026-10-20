@@ -54,10 +54,10 @@
     $('#headline').textContent = vd.h; $('#subline').textContent = vd.s;
     drawCash();
     const subs = M.blockSubtitles(R, S);
-    const block = (key, title, body) => `<section class="block" data-dnd="blocks" data-id="${key}"><h2>${DnD.handle('Drag to reorder block')}${esc(title)}</h2>${subs[key] ? `<p class="sub">${esc(subs[key])}</p>` : ''}${body}</section>`;
+    const block = (key, title, body) => `<section class="block" data-dnd="blocks" data-id="${key}"><h2>${DnD.handle('arrows', 'Block')}${esc(title)}</h2>${subs[key] ? `<p class="sub">${esc(subs[key])}</p>` : ''}${body}</section>`;
     const L = R.N - 1;
     const parts = {
-      kpis: () => `<section class="block" style="padding:0;border:none;background:none" data-dnd="blocks" data-id="kpis"><div class="kpis">${M.kpis(R).map((x, i) => `<div class="kpi">${i === 0 ? '<span style="float:right;margin:-4px -6px 0 0">' + DnD.handle('Drag to reorder block') + '</span>' : ''}<div class="v${x.bad ? ' bad' : ''}">${esc(x.v)}</div><div class="l">${esc(x.l)}</div></div>`).join('')}</div></section>`,
+      kpis: () => `<section class="block" style="padding:0;border:none;background:none" data-dnd="blocks" data-id="kpis"><div class="kpis">${M.kpis(R).map((x, i) => `<div class="kpi">${i === 0 ? '<span style="float:right;margin:-4px -6px 0 0">' + DnD.handle('arrows', 'Block') + '</span>' : ''}<div class="v${x.bad ? ' bad' : ''}">${esc(x.v)}</div><div class="l">${esc(x.l)}</div></div>`).join('')}</div></section>`,
       insights: () => block('insights', 'What the numbers say', `<ul class="insights">${M.insights(R, S).map(i => `<li class="${i.tone}">${esc(i.text)}</li>`).join('')}</ul>`),
       revenue: () => block('revenue', 'Revenue by customer type', `<div class="chart" id="revChart"></div><div class="legend" id="revLegend"></div>`),
       mix: () => block('mix', `Product mix in ${R.Y[L]}`, mixTable()),
@@ -111,7 +111,8 @@
   const drawRev = () => stacked('revChart', 'revLegend', R.segs.map(sg => ({ name: sg.s.name, vals: sg.rev, color: col(sg.i) })), R.revenue, 'Revenue by customer type per year');
   const drawCosts = () => stacked('costChart', 'costLegend', R.byCat.map((c, i) => ({ name: c.cat, vals: c.annual, color: col(M.CATEGORIES.indexOf(c.cat) + 3) })), R.opex, 'Operating costs by category per year');
 
-  const grip = () => DnD.handle();
+  const grip = () => DnD.handle('grip');           // table rows: drag dots
+  const arrows = () => DnD.handle('arrows');       // cards: up/down buttons
   function mixTable() {
     const L = R.N - 1, tot = R.revenue[L], gtot = R.gp[L];
     let h = `<div class="mixrow" aria-hidden="true">${R.segs.map(sg => tot > 0 && sg.rev[L] > 0 ? `<div style="width:${sg.rev[L] / tot * 100}%;background:${col(sg.i)}"></div>` : '').join('')}</div>`;
@@ -153,7 +154,7 @@
     const pane = $('#pane'); let h = '';
     if (tab === 'customers') {
       R.segs.forEach(x => { const s = x.s;
-        h += `<div class="card${x.p ? '' : ' off'}" data-dnd="segments" data-id="${s.id}" data-list="segments"><div class="card-h">${grip()}<span class="sw" style="background:${col(x.i)}"></span><input class="name" data-k="name" value="${esc(s.name)}" aria-label="Customer type name"><button class="x" data-del type="button" aria-label="Remove">×</button></div>`;
+        h += `<div class="card${x.p ? '' : ' off'}" data-dnd="segments" data-id="${s.id}" data-list="segments"><div class="card-h">${arrows()}<span class="sw" style="background:${col(x.i)}"></span><input class="name" data-k="name" value="${esc(s.name)}" aria-label="Customer type name"><button class="x" data-del type="button" aria-label="Remove">×</button></div>`;
         h += `<div class="grid2">${sel('Plan', 'plan', Object.assign(Object.fromEntries(S.plans.map(p => [p.id, p.name])), { '': 'No plan' }), s.plan)}<label class="f">Starts in<select data-k="from">${yearOpts(s.from)}</select></label></div>`;
         h += `<div class="grid2 mt">${field('Units per customer', s.per, numAttr('per', 'min="0"'))}${field('Unit is', s.perLabel, 'type="text" data-k="perLabel"')}</div>`;
         h += `<div class="grid2 mt">${field('Volume label', s.volLabel, 'type="text" data-k="volLabel"')}<span></span></div><p class="hint">${esc(s.volLabel || 'Customers')} per year (average)</p>${yearInputs(s.vol, 'vol', y => y < s.from)}`;
@@ -162,14 +163,14 @@
       h += `<button class="add" data-add="segments" type="button">Add customer type</button>`;
     } else if (tab === 'plans') {
       S.plans.forEach(p => {
-        h += `<div class="card" data-dnd="plans" data-id="${p.id}" data-list="plans"><div class="card-h">${grip()}<input class="name" data-k="name" value="${esc(p.name)}" aria-label="Plan name"><button class="x" data-del type="button" aria-label="Remove">×</button></div>`;
+        h += `<div class="card" data-dnd="plans" data-id="${p.id}" data-list="plans"><div class="card-h">${arrows()}<input class="name" data-k="name" value="${esc(p.name)}" aria-label="Plan name"><button class="x" data-del type="button" aria-label="Remove">×</button></div>`;
         h += `<div class="grid3">${field('Price (€)', p.price, numAttr('price', 'min="0"'))}${sel('Billed', 'unit', M.UNITS, p.unit)}${field('Cost to deliver (€)', p.cost, numAttr('cost', 'min="0"'))}</div>`;
         h += `<div class="grid2 mt">${sel('Customer pays', 'delay', { 0: 'on invoicing', 1: '1 month later', 2: '2 months later', 3: '3 months later', 6: '6 months later' }, p.delay)}<span></span></div>`;
         h += noteField(p.note) + `<p class="meta">${esc(M.planMeta(p, S))}</p></div>`; });
       h += `<button class="add" data-add="plans" type="button">Add plan</button>`;
     } else if (tab === 'costs') {
       R.costLines.forEach(l => { const c = l.c;
-        h += `<div class="card" data-dnd="costs" data-id="${c.id}" data-list="costs"><div class="card-h">${grip()}<input class="name" data-k="name" value="${esc(c.name)}" aria-label="Cost name"><button class="x" data-del type="button" aria-label="Remove">×</button></div>`;
+        h += `<div class="card" data-dnd="costs" data-id="${c.id}" data-list="costs"><div class="card-h">${arrows()}<input class="name" data-k="name" value="${esc(c.name)}" aria-label="Cost name"><button class="x" data-del type="button" aria-label="Remove">×</button></div>`;
         h += `<div class="grid2">${sel('Category', 'category', Object.fromEntries(M.CATEGORIES.map(x => [x, x])), c.category)}${sel('Type', 'type', M.COST_TYPES, c.type)}</div>`;
         if (c.type === 'fte') h += `<div class="grid2 mt">${field('Monthly cost per FTE (€, fully loaded)', c.salary, numAttr('salary', 'min="0"'))}<span></span></div>`;
         const lbl = { month: '€ per month, per year', year: '€ per year', once: '€ one-off, per year', pct: '% of revenue, per year', fte: 'FTE per year' }[c.type];
@@ -179,7 +180,7 @@
     } else if (tab === 'funding') {
       h += `<div class="card" data-static="opening">${field(`Cash on 1 January ${M.years(S)[0]} (€)`, S.opening.cash, numAttr('opening.cash'))}<label class="f mt">Notes<textarea data-k="opening.note" rows="2">${esc(S.opening.note || '')}</textarea></label></div>`;
       S.funding.forEach(f => {
-        h += `<div class="card" data-dnd="funding" data-id="${f.id}" data-list="funding"><div class="card-h">${grip()}<input class="name" data-k="name" value="${esc(f.name)}" aria-label="Funding name"><button class="x" data-del type="button" aria-label="Remove">×</button></div>`;
+        h += `<div class="card" data-dnd="funding" data-id="${f.id}" data-list="funding"><div class="card-h">${arrows()}<input class="name" data-k="name" value="${esc(f.name)}" aria-label="Funding name"><button class="x" data-del type="button" aria-label="Remove">×</button></div>`;
         h += `<div class="grid3">${field('Amount (€)', f.amount, numAttr('amount', 'min="0"'))}<label class="f">Year<select data-k="year">${yearOpts(f.year)}</select></label>${sel('Month', 'month', Object.fromEntries(M.MONTHS.map((m, i) => [i + 1, m])), f.month)}</div>`;
         h += `<div class="grid2 mt">${sel('Type', 'type', M.FUND_TYPES, f.type)}<span></span></div>`;
         h += noteField(f.note) + `<p class="meta">${esc(M.fundingMeta(f, R))}</p></div>`; });

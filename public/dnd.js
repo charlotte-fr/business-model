@@ -64,7 +64,9 @@
     if (after) to++;
     rest.splice(to, 0, item); return rest;
   }
-  /** Reorder handle: grip for dragging plus up/down buttons. */
-  const handle = (label = 'Drag to reorder') => `<span class="handle"><button class="grip" type="button" aria-label="${label}" title="Drag, or use the arrows">⋮⋮</button><button class="mv" type="button" data-mv="-1" aria-label="Move up" title="Move up">▲</button><button class="mv" type="button" data-mv="1" aria-label="Move down" title="Move down">▼</button></span>`;
+  /** Reorder handle. mode 'arrows' (big cards: up/down buttons) or 'grip' (table rows: drag dots). Never both. */
+  const handle = (mode = 'arrows', label = 'Reorder') => mode === 'grip'
+    ? `<span class="handle"><button class="grip" type="button" aria-label="${label}: drag to reorder" title="Drag to reorder">⋮⋮</button></span>`
+    : `<span class="handle"><button class="mv" type="button" data-mv="-1" aria-label="${label}: move up" title="Move up">▲</button><button class="mv" type="button" data-mv="1" aria-label="${label}: move down" title="Move down">▼</button></span>`;
   window.DnD = { attach, move, handle };
 })();
