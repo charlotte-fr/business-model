@@ -54,11 +54,12 @@
     $('#headline').textContent = vd.h; $('#subline').textContent = vd.s;
     drawCash();
     const subs = M.blockSubtitles(R, S);
-    const block = (key, title, body) => `<section class="block" data-dnd="blocks" data-id="${key}"><h2>${DnD.handle('arrows', 'Block')}${esc(title)}</h2>${subs[key] ? `<p class="sub">${esc(subs[key])}</p>` : ''}${body}</section>`;
+    const block = (key, title, body, fixed = false) => `<section class="block"${fixed ? '' : ` data-dnd="blocks" data-id="${key}"`}><h2>${fixed ? '' : DnD.handle('arrows', 'Block')}${esc(title)}</h2>${subs[key] ? `<p class="sub">${esc(subs[key])}</p>` : ''}${body}</section>`;
     const L = R.N - 1;
     const parts = {
       kpis: () => `<section class="block" style="padding:0;border:none;background:none" data-dnd="blocks" data-id="kpis"><div class="kpis">${M.kpis(R).map((x, i) => `<div class="kpi">${i === 0 ? '<span style="float:right;margin:-4px -6px 0 0">' + DnD.handle('arrows', 'Block') + '</span>' : ''}<div class="v${x.bad ? ' bad' : ''}">${esc(x.v)}</div><div class="l">${esc(x.l)}</div></div>`).join('')}</div></section>`,
-      insights: () => block('insights', 'What the numbers say', `<ul class="insights">${M.insights(R, S).map(i => `<li class="${i.tone}">${esc(i.text)}</li>`).join('')}</ul>`),
+      // Always the last block on the page, so it has no reorder handle and is not a drop target.
+      insights: () => block('insights', 'What the numbers say', `<ul class="insights">${M.insights(R, S).map(i => `<li class="${i.tone}">${esc(i.text)}</li>`).join('')}</ul>`, true),
       revenue: () => block('revenue', 'Revenue by customer type', `<div class="chart" id="revChart"></div><div class="legend" id="revLegend"></div>`),
       mix: () => block('mix', `Product mix in ${R.Y[L]}`, mixTable()),
       costs: () => block('costs', 'Operating costs by category', `<div class="chart" id="costChart"></div><div class="legend" id="costLegend"></div>${costTable()}`),
@@ -266,7 +267,7 @@
 
   /* ---------- drag and drop ---------- */
   DnD.attach(document.body, (list, idA, idB, after) => {
-    if (list === 'blocks') S.layout.blocks = DnD.move(S.layout.blocks, idA, idB, after);
+    if (list === 'blocks') S.layout.blocks = M.layoutOrder(DnD.move(S.layout.blocks, idA, idB, after));
     else if (S[list]) S[list] = DnD.move(S[list], idA, idB, after);
     else return;
     render(); renderPane(); markDirty();

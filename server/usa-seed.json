@@ -40,6 +40,6 @@
       { "id": "k9", "name": "HIPAA compliance set-up", "category": "Other", "type": "once", "values": [0, 13370, 0, 0, 0], "salary": 0, "note": "$15,000 one-off for a HIPAA risk assessment, policies and business associate agreements before clinical partners (assumption)." }
     ],
     "funding": [],
-    "layout": { "blocks": ["kpis", "insights", "revenue", "mix", "costs", "pl"] }
+    "layout": { "blocks": ["kpis", "revenue", "mix", "costs", "pl", "insights"] }
   }
 }

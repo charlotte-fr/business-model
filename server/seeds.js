@@ -59,7 +59,7 @@ function base(route, segments) {
     segments,
     costs: costs(route),
     funding: funding(),
-    layout: { blocks: ['kpis', 'insights', 'revenue', 'mix', 'costs', 'pl'] },
+    layout: { blocks: ['kpis', 'revenue', 'mix', 'costs', 'pl', 'insights'] },
   };
 }
 

@@ -24,6 +24,8 @@ const R2 = M.compute(s2); assert.equal(Math.round(R2.revenue[0]), 100 * 19 * 12)
 const s3 = M.blank(2027); s3.segments.push({ id: 'c', name: 'A', plan: s3.plans[0].id, per: 1, from: 2027, vol: [0, 0, 0, 2000, 2000] }); s3.costs = [{ id: 'k', name: 'x', category: 'Other', type: 'year', values: [100000, 100000, 100000, 0, 0], salary: 0 }];
 const R3 = M.compute(s3); assert.equal(R3.tax[0], 0); assert.equal(R3.tax[1], 0); assert.ok(R3.tax[4] > 0);
 // years resize
+const s5 = M.normalize({ layout: { blocks: ['insights', 'pl', 'kpis', 'bogus'] } }); assert.deepEqual(s5.layout.blocks, ['pl', 'kpis', 'revenue', 'mix', 'costs', 'insights']);
+assert.deepEqual(M.layoutOrder(['kpis', 'insights', 'revenue']).slice(-1), ['insights']);
 const s4 = M.blank(2027); s4.years.count = 7; M.normalize(s4); assert.equal(s4.costs[0].values.length, 7);
 console.log('engine ok');
 
