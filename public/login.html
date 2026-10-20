@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Axite business models</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div class="login">
+  <form id="f" autocomplete="off">
+    <div class="mark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="currentColor"/><circle cx="19" cy="16" r="6" fill="var(--bg)"/></svg><span>Axite</span></div>
+    <h1>Business models</h1>
+    <p>Internal. Enter the shared password to continue.</p>
+    <label class="f">Password<input type="password" id="pw" name="password" autocomplete="current-password" required autofocus></label>
+    <div class="err" id="err" aria-live="polite"></div>
+    <button class="btn primary" type="submit">Open</button>
+  </form>
+</div>
+<script>
+document.getElementById('f').addEventListener('submit',async e=>{
+  e.preventDefault();const err=document.getElementById('err');err.textContent='';
+  const r=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pw').value})});
+  if(r.ok){location.href='/';return;}
+  const j=await r.json().catch(()=>({}));err.textContent=j.error||'Could not log in.';
+});
+</script>
+</body>
+</html>

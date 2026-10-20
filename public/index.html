@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Axite business models</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/app.css">
+<script>try{const t=localStorage.getItem('axite-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="/" aria-label="Axite"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="currentColor"/><circle cx="19" cy="16" r="6" fill="var(--bg)"/></svg><span>Axite business models</span> <span class="badge internal">Internal</span></a>
+    <div class="actions">
+      <button class="btn" id="theme" type="button">Dark mode</button>
+      <button class="btn" id="newBlank" type="button">New empty dashboard</button>
+      <button class="btn" id="logout" type="button">Log out</button>
+    </div>
+  </header>
+  <div class="notice" id="notice"></div>
+  <div class="grid" id="grid"></div>
+  <div class="section-h" id="archH" style="display:none"><h2>Archived</h2><button class="btn sm" id="toggleArch" type="button">Show</button></div>
+  <div class="grid" id="archGrid" style="display:none"></div>
+  <footer>Each card is a saved model. Open one to edit it; every change is saved on the server, with version history. Drag cards to reorder them.</footer>
+</div>
+<script src="/static/model.js"></script>
+<script src="/static/dnd.js"></script>
+<script src="/static/overview.js"></script>
+</body>
+</html>

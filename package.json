@@ -1,0 +1,13 @@
+{
+  "name": "axite-business-models",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Password-protected business model dashboards for Axite",
+  "type": "commonjs",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node --no-warnings=ExperimentalWarning server/server.js",
+    "dev": "APP_PASSWORD=axite SESSION_SECRET=dev node --no-warnings=ExperimentalWarning server/server.js",
+    "test": "node --no-warnings=ExperimentalWarning server/test.js"
+  }
+}

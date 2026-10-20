@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Axite business model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/app.css">
+<script>try{const t=localStorage.getItem('axite-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="/" aria-label="Back to overview"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="currentColor"/><circle cx="19" cy="16" r="6" fill="var(--bg)"/></svg><span>← All dashboards</span></a>
+    <div class="actions">
+      <span class="status" id="status">Loading…</span>
+      <button class="btn" id="theme" type="button">Dark mode</button>
+      <button class="btn" id="history" type="button">History</button>
+      <button class="btn" id="export" type="button">Export</button>
+      <button class="btn" id="import" type="button">Import</button>
+      <button class="btn" id="reset" type="button">Reset to starting numbers</button>
+    </div>
+  </header>
+  <div class="notice" id="notice"></div>
+
+  <section class="verdict" aria-live="polite">
+    <div class="card-h" style="margin-bottom:6px;gap:10px">
+      <input class="name" id="dashName" aria-label="Dashboard name" style="font-size:15px;color:#CFEBDD;flex:0 1 auto;width:auto;min-width:160px">
+      <span class="badge" id="dashRoute"></span>
+      <span class="badge internal">Internal</span>
+    </div>
+    <h1 id="headline">—</h1>
+    <p id="subline">—</p>
+    <div class="runway chart" id="cashChart"></div>
+  </section>
+
+  <div class="layout">
+    <main id="blocks"></main>
+    <aside class="inputs" aria-label="Inputs">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-tab="customers" type="button">Customers</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="plans" type="button">Plans</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="costs" type="button">Costs</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="funding" type="button">Funding &amp; cash</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="setup" type="button">Setup</button>
+      </div>
+      <div id="pane"></div>
+    </aside>
+  </div>
+  <footer id="footer"></footer>
+</div>
+
+<div class="drawer" id="drawer" role="dialog" aria-label="Version history">
+  <div class="panel">
+    <div class="card-h"><h3 style="flex:1">Version history</h3><button class="x" id="closeDrawer" type="button" aria-label="Close">×</button></div>
+    <p class="hint" style="margin:0 0 10px">A version is saved automatically at most every 20 minutes while you edit, and whenever you ask for one. Restoring keeps a copy of the current numbers.</p>
+    <div class="grid2" style="margin-bottom:10px"><input id="snapLabel" placeholder="Label, e.g. before new pricing" style="padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--field)"><button class="btn primary" id="snapSave" type="button">Save version now</button></div>
+    <div id="snapList"></div>
+  </div>
+</div>
+<input type="file" id="importFile" accept="application/json" hidden>
+<script src="/static/model.js"></script>
+<script src="/static/dnd.js"></script>
+<script src="/static/dashboard.js"></script>
+</body>
+</html>
